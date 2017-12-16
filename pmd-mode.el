@@ -55,9 +55,9 @@
     ("F[0-9]\\{1,3\\}" . pmd-volume)
 
     ;; LFO
-    ("M[AB]?l?[0-9]\\{1,3\\}\\.*\\(,[+-]?[0-9]\\{1,3\\}\\)\\{3\\}?" . font-lock-constant-face)
-    ("MW[AB]?[0-5]\\|\\*[AB]?[0-7]\\(,[AB]?[0-7]\\)?" . font-lock-constant-face)
+    ("MW[AB]?[0-6]\\|\\*[AB]?[0-7]\\(,[AB]?[0-7]\\)?" . font-lock-constant-face)
     ("MM[AB]?[0-9]\\{1,2\\}\\|MX[AB]?[01]" . font-lock-constant-face)
+    ("M[AB]?l?[0-9]\\{1,3\\}\\.*\\(,[+-]?[0-9]\\{1,3\\}\\)\\{3\\}?" . font-lock-constant-face)
     ("MP[AB]?[+-]?[0-9]\\{1,3\\}\\(,l?[0-9]\\{1,3\\}\\.*\\(,[0-9]\\{1,3\\}\\)?\\)?" . font-lock-constant-face)
     ("MD[AB]?[0-9]\\{1,3\\}\\(,[+-]?[0-9]\\{1,3\\}\\(,[0-9]\\{1,3\\}\\)?\\)?" . font-lock-constant-face)
     ("H[0-7]\\(,[0-3]\\)?\\(,l?[0-9]\\{1,3\\}\\.*\\)?" . font-lock-constant-face)
