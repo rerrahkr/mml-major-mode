@@ -1,9 +1,7 @@
 # mml-major-mode
-MML用Emacsメジャーモード  
-Copyright (C) 2017 R.K.R.  
-  
-## 概要
-EmacsでMMLのシンタックスハイライトを行うメジャーモードです。  
-ファイルと対応するMMLは以下の通りです。  
-* pmd-mode.el (PMD)
-* fmp7-mode.el (FMP7)
+Emacs major mode for editing MML
+
+## Overview
+This major mode enables to syntax highlight for MML code in Emacs.
+* pmd-mode.el (for PMD)
+* fmp7-mode.el (for FMP7)
