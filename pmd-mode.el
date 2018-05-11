@@ -151,7 +151,7 @@
     ("/" . font-lock-warning-face))
 
   ;; 適用ファイル拡張子
-  '("\\.mml$")
+  '("\\.mml\\'")
 
   ;; hook
   nil

@@ -117,7 +117,7 @@
     ("![01]?" . font-lock-warning-face))
 
   ;; 適用ファイル拡張子
-  '("\\.mwi$")
+  '("\\.mwi\\'")
 
   ;; hook
   nil
