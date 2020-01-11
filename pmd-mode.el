@@ -1,7 +1,7 @@
 (require 'generic-x)
 
 
-; 追加face定義
+; Face definitions
 (defface pmd-part
 '((t (:foreground "maroon" :bold t)))
   "face of part in MML for PMD")
@@ -14,21 +14,21 @@
   '((t (:foreground "red1")))
   "face of volume in MML for PMD")
 (defvar pmd-volume 'pmd-volume)
-(defface pmd-move
+(defface pmd-perform
   '((t (:foreground "DodgerBlue3")))
-  "face of move in MML for PMD")
-(defvar pmd-move 'pmd-move)
+  "face of performance in MML for PMD")
+(defvar pmd-perform 'pmd-perform)
 
 
-; Major Mode定義
+; Major mode definition
 (define-generic-mode pmd-mode
-  ;; コメント
+  ;; Comment
   '(";")
   
-  ;; キーワード
+  ;; Keyword
   nil
   
-     ;; 設定チャンネル
+     ;; Overall control commands
   '(("#[Ff][Ii][Ll][Ee][Nn][Aa][Mm][Ee][ \t]+.+$" . font-lock-builtin-face)
     ("#[Pp][Cc][Mm][Ff][Ii][Ll][Ee][ \t]+.+$" . font-lock-builtin-face)
     ("#[Oo][Pp][Tt][Ii][Oo][Nn][ \t]+.+$" . font-lock-builtin-face)
@@ -60,19 +60,19 @@
     ("#[Ii][Nn][Cc][Ll][Uu][Dd][Ee][ \t]+.+$" . font-lock-builtin-face)
     ("Z[0-9]\\{1,3\\}\\|~[+-]?[0-9]\\{1,3\\}" . font-lock-builtin-face)
     
-    ;; 各パート
+    ;; Part notation
     ("^[A-QS-Z]+\\|^R[0-9]\\{1,3\\}" . pmd-part)
 
-    ;; 条件コンパイル
+    ;; Part limit
     ("|!?\\([A-Z]+\\)?" . pmd-part)
 
-    ;; 音量
+    ;; Volume
     ("\\\\V[+-]?[0-9]\\{1,2\\}\\|\\\\v[bchist][+-]?[0-9]\\{1,2\\}" . pmd-volume)
     ("v[0-9]\\{1,2\\}\\|V[0-9]\\{1,3\\}\\|v[+-]?[0-9]\\{1,3\\}" . pmd-volume)
     ("v[()][0-9]\\{1,2\\}\\|[()]\\^?%?\\([0-9]\\{1,3\\}\\)?" . pmd-volume)
     ("D[FPRS][+-]?[0-9]\\{1,3\\}" . pmd-volume)
 
-    ;; フェードアウト
+    ;; Fade out
     ("F[0-9]\\{1,3\\}" . pmd-volume)
 
     ;; LFO
@@ -86,7 +86,7 @@
     ("##[0-9]\\{1,3\\},[0-3],[+-]?[0-9]\\{1,2\\},[0-9]\\{1,3\\}" . font-lock-constant-face)
     ("#w[0-3]\\|#p[+-]?[0-9]\\{1,2\\}\\|#Dl?[0-9]\\{1,3\\}\\.*" . font-lock-constant-face)
     
-    ;; 音色設定系
+    ;; Instrument definitions & commands
     ("^@[ \t,]*[0-9]\\{1,3\\}\\([ \t,]+[0-9]\\{1,3\\}\\)\\{2\\}\\([ \t]=.+\\)?" . font-lock-keyword-face)
     ("^\\([ \t,]+[+-]?[0-9]\\{1,3\\}\\)\\{10,11\\}" . font-lock-keyword-face)
     ("@[0-9]\\{1,3\\}" . font-lock-keyword-face)
@@ -98,65 +98,73 @@
     ("s[0-9]\\{1,2\\}\\|P[1-3]\\|w[+-]?[0-9]\\{1,2\\}" . font-lock-keyword-face)
     ("[Nn][0-9]\\{1,3\\}\\|A[01]" . font-lock-keyword-face)
 
-    ;; パン
+    ;; Pan
     ("p[0-3]\\|px[01]\\|px[+-][0-9]\\{1,3\\}" . pmd-pan)
     ("\\\\[lmr][bchist]" . pmd-pan)
 
-    ;; オクターブ、移調、転調
+    ;; Octave, Transpose, Modulation
     ("o[1-8]\\|[X<>]" . font-lock-function-name-face)
     ("o[+-][1-7]\\|__?[+-]?[0-9]\\{1,3\\}" . font-lock-function-name-face)
     ("_{[+-=][a-g]+}\\|_M[+-]?[0-9]\\{1,3\\}" . font-lock-function-name-face)
 
-    ;; デチューン、ピッチベンド
+    ;; Detune, Pitch bend
     ("DD?[+-]?[0-9]\\{1,5\\}\\|sdd?[0-9]\\{1,2\\},[0-9]\\{1,5\\}" . font-lock-function-name-face)
     ("DX[01]\\|B[0-9]\\{1,3\\}\\|I[+-]?[0-9]\\|DM[+-]?[0-9]" . font-lock-function-name-face)
 
-    ;; ポルタメント
+    ;; Broken chord
+    ("{{" . font-lock-function-name-face)
+    ("}}[%\\.0-9]*,[%\\.0-9]*,[01]?,[0-9]*,[+-]?[0-9]+" . font-lock-function-name-face)
+    ("}}[%\\.0-9]*,[%\\.0-9]*,[01]?,[0-9]*" . font-lock-function-name-face)
+    ("}}[%\\.0-9]*,[%\\.0-9]*,[01]?" . font-lock-function-name-face)
+    ("}}[%\\.0-9]*,[%\\.0-9]*" . font-lock-function-name-face)
+    ("}}[%\\.0-9]*" . font-lock-function-name-face)
+    
+    ;; Portamento
     ("{\\|}\\(%?[0-9]\\{1,3\\}\\.*\\(,[0-9]\\{1,3\\}\\.*\\)?\\)?" . font-lock-function-name-face)
 
-    ;; テンポ
-    ("t[+-]?[0-9]\\{2,3\\}\\|T[+-]?[0-9]\\{1,3\\}" . pmd-move)
+    ;; Tempo
+    ("t[+-]?[0-9]\\{2,3\\}\\|T[+-]?[0-9]\\{1,3\\}" . pmd-perform)
 
-    ;; ループ
-    ("L\\|\\[\\|:\\|\\][0-9]\\{1,3\\}?" . pmd-move)
+    ;; Loop
+    ("L\\|\\[\\|:\\|\\][0-9]\\{1,3\\}?" . pmd-perform)
 
-    ;; 装飾音符
-    ("Sl?[0-9]\\{1,3\\}\\.*\\(,[+-]?[0-9]\\{1,3\\}\\(,[01]\\)?\\)?" . pmd-move)
+    ;; Grace note
+    ("Sl?[0-9]\\{1,3\\}\\.*\\(,[+-]?[0-9]\\{1,3\\}\\(,[01]\\)?\\)?" . pmd-perform)
 
-    ;; 疑似エコー、ディレイ
-    ("Wl?[0-9]\\{1,3\\}\\.*\\(,%?[+-]?[0-9]\\{1,3\\}\\(,[0-3]\\)?\\)?" . pmd-move)
-    ("sk[0-9]\\{1,2\\}\\(,l?[0-9]\\{3\\}\\)?" . pmd-move)
+    ;; Pseudo-echo & delay
+    ("Wl?[0-9]\\{1,3\\}\\.*\\(,%?[+-]?[0-9]\\{1,3\\}\\(,[0-3]\\)?\\)?" . pmd-perform)
+    ("sk[0-9]\\{1,2\\}\\(,l?[0-9]\\{3\\}\\)?" . pmd-perform)
     
-    ;; 音長
+    ;; Note length
     ("l%?[0-9]\\{1,3\\}\\.*\\|C[0-9]\\{1,3\\}" . font-lock-type-face)
 
-    ;; ゲートタイム
+    ;; Note cut
     ("Q\\([0-8]\\|%[0-9]\\{1,3\\}\\)" . font-lock-type-face)
     ("q[0-9]\\{1,3\\}\\(-[0-9]\\{1,3\\}?\\)?\\(,[0-9]\\{1,3\\}\\)?" . font-lock-type-face)
     ("q[0-9]\\{1,3\\}\\.*\\(-\\([0-9]\\{1,3\\}\\.*\\)?\\)?\\(,[0-9]\\{1,3\\}\\.*\\)?" . font-lock-type-face)
     
-    ;; タイ、スラー
+    ;; Tie, Slur
     ;("&&?" . font-lock-type-face)
     
-    ;; マクロ
+    ;; Variable
     ("^![0-9A-Za-z]+" . font-lock-variable-name-face)
 
-    ;; リズムパターン
+    ;; Rhythm pattern
     ("R[0-9]\\{1,3\\}" . font-lock-variable-name-face)
 
-    ;; パートマスク
+    ;; Channel mask
     ("m[01]" . font-lock-warning-face)
 
-    ;; コンパイル打ち切り
+    ;; Compilation end
     ("/" . font-lock-warning-face))
 
-  ;; 適用ファイル拡張子
+  ;; File extension
   '("\\.mml\\'")
 
-  ;; hook
+  ;; Hook
   nil
 
-  ;; 説明
+  ;; Description
   "Major mode of MML for PMD")
 
 
